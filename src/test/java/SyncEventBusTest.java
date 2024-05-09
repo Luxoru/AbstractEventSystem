@@ -13,7 +13,9 @@ public class SyncEventBusTest {
         SyncEventBus syncEventBus = new SyncEventBus();
 
         syncEventBus.subscribe(CustomEvent.class, (event) ->{
-            System.out.println("We here with a custom event called, with UUID "+event.getUuid()+"!");
+
+            System.out.println("Custom event called, with UUID "+event.getUuid());
+
         });
 
         CompletableFuture<SyncEventBus> future = CompletableFuture.supplyAsync(()->{
