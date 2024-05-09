@@ -10,17 +10,16 @@ import java.util.concurrent.ConcurrentHashMap;
  * @see EventBus
  * @author Luxoru
  */
-public class SyncEventBus implements EventBus {
+public class SyncEventBus implements EventBus<Event> {
 
     /**
      * A map that stores event types mapped to sets of event callbacks.
      */
-    protected final Map<Class<? extends Event>, Set<EventCallback<? extends Event>>> callbacks = new ConcurrentHashMap<>();
+        protected final Map<Class<? extends Event>, Set<EventCallback<? extends Event>>> callbacks = new ConcurrentHashMap<>();
 
     /**
      * Subscribe a callback to receive events of a specified type.
      *
-     * @param <T>       The type of event to subscribe to.
      * @param eventType The class representing the type of event to subscribe to.
      * @param callback  The callback to be invoked when an event of the specified type is dispatched.
      */
@@ -32,7 +31,6 @@ public class SyncEventBus implements EventBus {
     /**
      * Unsubscribe a callback from receiving events of a specified type.
      *
-     * @param <T>       The type of event to unsubscribe from.
      * @param eventType The class representing the type of event to unsubscribe from.
      * @param callback  The callback to be removed from the list of event subscribers.
      */
@@ -50,15 +48,14 @@ public class SyncEventBus implements EventBus {
     /**
      * Dispatch an event to all subscribers that are registered to handle events of its type.
      *
-     * @param <T>   The type of event to dispatch.
      * @param event The event to be dispatched to subscribers.
      */
     @Override
     @SuppressWarnings("unchecked")
-    public <T extends Event> void dispatch(T event) {
+    public void dispatch(Event event) {
         Set<EventCallback<? extends Event>> eventCallbacks = callbacks.computeIfAbsent(event.getClass(), key -> ConcurrentHashMap.newKeySet());
         for (EventCallback<? extends Event> callback : eventCallbacks) {
-            ((EventCallback<T>) callback).handle(event);
+            ((EventCallback<Event>) callback).handle(event);
         }
     }
 
