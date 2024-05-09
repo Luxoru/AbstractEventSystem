@@ -10,32 +10,32 @@ package me.luxoru.eventsystem;
  * @author Luxoru
  */
 
-public interface EventBus {
+public interface EventBus<T> {
 
     /**
      * Subscribe a callback to receive events of a specified type.
      *
-     * @param <T>       The type of event to subscribe to.
+
      * @param eventType The class representing the type of event to subscribe to.
      * @param callback  The callback to be invoked when an event of the specified type is dispatched.
      */
-    <T extends Event> void subscribe(Class<T> eventType, EventCallback<T> callback);
+    <U extends T> void subscribe(Class<U> eventType, EventCallback<U> callback);
 
     /**
      * Unsubscribe a callback from receiving events of a specified type.
      *
-     * @param <T>       The type of event to unsubscribe from.
+
      * @param eventType The class representing the type of event to unsubscribe from.
      * @param callback  The callback to be removed from the list of event subscribers.
      */
-    <T extends Event> void unsubscribe(Class<T> eventType, EventCallback<T> callback);
+    <U extends T> void unsubscribe(Class<U> eventType, EventCallback<U> callback);
 
     /**
      * Dispatch an event to all subscribers that are registered to handle events of its type.
      *
-     * @param <T>   The type of event to dispatch.
+
      * @param event The event to be dispatched to subscribers.
      */
-    <T extends Event> void dispatch(T event);
+     <U extends T> void dispatch(U event);
 }
 
