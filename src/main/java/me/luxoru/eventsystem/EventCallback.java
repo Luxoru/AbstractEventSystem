@@ -9,7 +9,7 @@ package me.luxoru.eventsystem;
  * @see Event
  * @author Luxoru
  */
-public interface EventCallback<T extends Event> {
+public interface EventCallback<T> {
 
     /**
      * Handle the given event.
