@@ -18,6 +18,6 @@ public interface EventCallback<T> {
      *
      * @param event The event to be handled.
      */
-    void handle(T event);
+    void handle(Object event);
 }
 
