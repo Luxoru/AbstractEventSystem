@@ -19,7 +19,7 @@ public interface EventBus<T> {
      * @param eventType The class representing the type of event to subscribe to.
      * @param callback  The callback to be invoked when an event of the specified type is dispatched.
      */
-    <U extends T> void subscribe(Class<U> eventType, EventCallback<U> callback);
+    default <U extends T> void subscribe(Class<U> eventType, EventCallback callback){};
 
     /**
      * Unsubscribe a callback from receiving events of a specified type.
@@ -28,7 +28,7 @@ public interface EventBus<T> {
      * @param eventType The class representing the type of event to unsubscribe from.
      * @param callback  The callback to be removed from the list of event subscribers.
      */
-    <U extends T> void unsubscribe(Class<U> eventType, EventCallback<U> callback);
+    default <U extends T> void unsubscribe(Class<U> eventType, EventCallback callback){};
 
     /**
      * Dispatch an event to all subscribers that are registered to handle events of its type.
@@ -36,6 +36,6 @@ public interface EventBus<T> {
 
      * @param event The event to be dispatched to subscribers.
      */
-     <U extends T> void dispatch(U event);
+    default <U extends T> void dispatch(U event){};
 }
 

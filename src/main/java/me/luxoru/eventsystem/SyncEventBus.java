@@ -15,7 +15,7 @@ public class SyncEventBus implements EventBus<Event> {
     /**
      * A map that stores event types mapped to sets of event callbacks.
      */
-        protected final Map<Class<? extends Event>, Set<EventCallback<? extends Event>>> callbacks = new ConcurrentHashMap<>();
+        protected final Map<Class<? extends Event>, Set<EventCallback>> callbacks = new ConcurrentHashMap<>();
 
     /**
      * Subscribe a callback to receive events of a specified type.
@@ -24,7 +24,7 @@ public class SyncEventBus implements EventBus<Event> {
      * @param callback  The callback to be invoked when an event of the specified type is dispatched.
      */
     @Override
-    public <T extends Event> void subscribe(Class<T> eventType, EventCallback<T> callback) {
+    public <T extends Event> void subscribe(Class<T> eventType, EventCallback callback) {
         callbacks.computeIfAbsent(eventType, key -> ConcurrentHashMap.newKeySet()).add(callback);
     }
 
@@ -35,7 +35,7 @@ public class SyncEventBus implements EventBus<Event> {
      * @param callback  The callback to be removed from the list of event subscribers.
      */
     @Override
-    public <T extends Event> void unsubscribe(Class<T> eventType, EventCallback<T> callback) {
+    public <T extends Event> void unsubscribe(Class<T> eventType, EventCallback callback) {
         callbacks.computeIfPresent(eventType, (key, eventCallbacks) -> {
             eventCallbacks.remove(callback);
             if (eventCallbacks.isEmpty()) {
@@ -53,9 +53,9 @@ public class SyncEventBus implements EventBus<Event> {
     @Override
     @SuppressWarnings("unchecked")
     public void dispatch(Event event) {
-        Set<EventCallback<? extends Event>> eventCallbacks = callbacks.computeIfAbsent(event.getClass(), key -> ConcurrentHashMap.newKeySet());
-        for (EventCallback<? extends Event> callback : eventCallbacks) {
-            ((EventCallback<Event>) callback).handle(event);
+        Set<EventCallback> eventCallbacks = callbacks.computeIfAbsent(event.getClass(), key -> ConcurrentHashMap.newKeySet());
+        for (EventCallback callback : eventCallbacks) {
+            callback.handle(event);
         }
     }
 
@@ -64,7 +64,7 @@ public class SyncEventBus implements EventBus<Event> {
      *
      * @return An immutable copy of the map of event callbacks.
      */
-    public Map<Class<? extends Event>, Set<EventCallback<? extends Event>>> getCallbacks() {
+    public Map<Class<? extends Event>, Set<EventCallback>> getCallbacks() {
         return Map.copyOf(callbacks);
     }
 }
