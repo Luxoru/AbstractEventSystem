@@ -12,7 +12,7 @@ public class SyncEventBusTest {
     public void eventBusTest() {
         SyncEventBus syncEventBus = new SyncEventBus();
 
-        syncEventBus.subscribe(CustomEvent.class, (event) ->{
+        syncEventBus.subscribe(CustomEvent.class, event ->{
 
             System.out.println("Custom event called, with UUID "+event.getUuid());
 
